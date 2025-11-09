@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrinho - Dark Store</title>
+  <style>
+    :root {
+      --bg-color: #121212;
+      --card-bg: #1e1e1e;
+      --text-color: #f0f0f0;
+      --accent: #bb86fc;
+      --accent-hover: #9a67ea;
+      --danger: #e74c3c;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      padding: 1rem;
+    }
+
+    header {
+      background-color: var(--card-bg);
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+
+    .carrinho {
+      max-width: 700px;
+      margin: auto;
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      padding: 1rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    .item {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #333;
+      padding: 0.5rem 0;
+    }
+
+    .item img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-right: 1rem;
+    }
+
+    .item-info {
+      flex: 1;
+    }
+
+    .item h3 {
+      margin: 0;
+    }
+
+    .item p {
+      margin: 0.2rem 0;
+    }
+
+    .remover {
+      background-color: var(--danger);
+      border: none;
+      color: #fff;
+      padding: 0.5rem 0.8rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .remover:hover {
+      background-color: #c0392b;
+    }
+
+    .total {
+      text-align: right;
+      font-size: 1.2rem;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+
+    .checkout {
+      margin-top: 1.5rem;
+      background-color: #181818;
+      padding: 1rem;
+      border-radius: 10px;
+    }
+
+    .checkout h2 {
+      margin-top: 0;
+      font-size: 1.2rem;
+    }
+
+    .checkout input, .checkout textarea {
+      width: 100%;
+      margin-bottom: 0.8rem;
+      padding: 0.6rem;
+      border-radius: 6px;
+      border: 1px solid #333;
+      background-color: #222;
+      color: var(--text-color);
+      font-size: 1rem;
+    }
+
+    .finalizar {
+      display: block;
+      width: 100%;
+      background-color: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 0.8rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: background 0.3s;
+    }
+
+    .finalizar:hover {
+      background-color: var(--accent-hover);
+    }
+
+    .vazio {
+      text-align: center;
+      color: #aaa;
+      font-style: italic;
+    }
+
+    .voltar{
+      width:100%;
+      margin-bottom: 5px;
+      background-color: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 0.3rem;
+      font-size: 1rem;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <header>🛒 Carrinho</header>
+  <button class="voltar" onclick="window.location.href='index.html'" >Voltar</button>
+  <div class="carrinho" id="carrinhoContainer">
+    <p class="vazio">Seu carrinho está vazio.</p>
+  </div>
+
+  <script>
+    const carrinhoContainer = document.getElementById('carrinhoContainer');
+
+    function carregarCarrinho() {
+      const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+
+      if (carrinho.length === 0) {
+        carrinhoContainer.innerHTML = '<p class="vazio">Seu carrinho está vazio.</p>';
+        return;
+      }
+
+      let total = 0;
+      carrinhoContainer.innerHTML = '';
+
+      carrinho.forEach((item, index) => {
+        total += item.preco;
+
+        const div = document.createElement('div');
+        div.className = 'item';
+        div.innerHTML = `
+          <img src="${item.imagem}" alt="${item.nome}">
+          <div class="item-info">
+            <h3>${item.nome}</h3>
+            <p>R$ ${item.preco.toFixed(2)}</p>
+          </div>
+          <button class="remover" onclick="removerItem(${index})">✕</button>
+        `;
+        carrinhoContainer.appendChild(div);
+      });
+
+      const totalDiv = document.createElement('div');
+      totalDiv.className = 'total';
+      totalDiv.textContent = `Total: R$ ${total.toFixed(2)}`;
+      carrinhoContainer.appendChild(totalDiv);
+
+      const checkoutDiv = document.createElement('div');
+      checkoutDiv.className = 'checkout';
+      checkoutDiv.innerHTML = `
+        <h2>Finalizar Pedido</h2>
+        <input type="text" id="nomeCliente" placeholder="Nome completo" required>
+        <input type="email" id="emailCliente" placeholder="E-mail" required>
+        <input type="tel" id="telefoneCliente" placeholder="Telefone" required>
+        <textarea id="enderecoCliente" rows="3" placeholder="Endereço completo" required></textarea>
+        <button class="finalizar" onclick="finalizarPedido()">Confirmar Pedido</button>
+      `;
+      carrinhoContainer.appendChild(checkoutDiv);
+    }
+
+    function removerItem(index) {
+      const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+      carrinho.splice(index, 1);
+      localStorage.setItem('carrinho', JSON.stringify(carrinho));
+      carregarCarrinho();
+    }
+
+    function finalizarPedido() {
+      const nome = document.getElementById('nomeCliente').value.trim();
+      const email = document.getElementById('emailCliente').value.trim();
+      const tel = document.getElementById('telefoneCliente').value.trim();
+      const endereco = document.getElementById('enderecoCliente').value.trim();
+
+      if (!nome || !email || !tel || !endereco) {
+        alert('Por favor, preencha todos os campos antes de finalizar o pedido.');
+        return;
+      }
+
+      alert(`✅ Pedido confirmado!\n\nObrigado, ${nome}!\nEnviaremos a confirmação para: ${email}`);
+      localStorage.removeItem('carrinho');
+      carregarCarrinho();
+    }
+
+    carregarCarrinho();
+  </script>
+</body>
+</html>

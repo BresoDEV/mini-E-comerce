@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dark Store - Início</title>
+  <style>
+    :root {
+      --bg-color: #121212;
+      --card-bg: #1e1e1e;
+      --text-color: #f0f0f0;
+      --accent: #bb86fc;
+      --accent-hover: #9a67ea;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+
+    header {
+      background-color: var(--card-bg);
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .banner {
+      width: 100%;
+      height: 250px;
+      background: url('https://s.tmimgcdn.com/scr/1200x750/215800/banner-promocional-de-anuncios-de-fotografia-digital_215836-original.jpg') center/cover;
+      margin-bottom: 1rem;
+    }
+
+    .produtos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      padding: 1rem;
+    }
+
+    .produto {
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+    }
+
+    .produto:hover {
+      transform: scale(1.03);
+    }
+
+    .produto img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .produto .info {
+      padding: 0.8rem;
+    }
+
+    .produto h3 {
+      margin: 0 0 0.5rem;
+    }
+
+    .produto button {
+      background-color: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .produto button:hover {
+      background-color: var(--accent-hover);
+    }
+  </style>
+</head>
+<body>
+  <header>Dark Store
+    <button onclick="location.href='carrinho.html'" style="float:right;background:none;border:none;color:#bb86fc;cursor:pointer;margin-right: -3px;font-size: x-large;margin-top: -10px;">🛒</button>
+  
+  </header>
+  <script src="itens.js"></script>
+    
+   <div class="banner"></div>
+  <section class="produtos" id="produtos"></section>
+
+  <script>
+    
+
+    const container = document.getElementById('produtos');
+
+    PRODUCTS.forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'produto';
+      card.innerHTML = `
+        <img src="${p.imagem}" alt="${p.nome}">
+        <div class="info">
+          <h3>${p.nome}</h3>
+          <p>R$ ${p.preco.toFixed(2)}</p>
+          <button onclick="location.href='produto.html?id=${p.id}'">Ver produto</button>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  </script>
+</body>
+</html>
