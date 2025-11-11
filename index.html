@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dark Store - Início</title>
+  <title>Breso Store - Início</title>
   <style>
     :root {
       --bg-color: #121212;
@@ -31,8 +31,13 @@
     .banner {
       width: 100%;
       height: 250px;
-      background: url('https://s.tmimgcdn.com/scr/1200x750/215800/banner-promocional-de-anuncios-de-fotografia-digital_215836-original.jpg') center/cover;
+      background: url('img/banner1.jpeg') center/cover;
       margin-bottom: 1rem;
+      transition: all 0.3s linear;
+    }
+    .banner:hover {
+      scale: 1.01;
+
     }
 
     .produtos {
@@ -48,6 +53,11 @@
       overflow: hidden;
       box-shadow: 0 0 10px rgba(0,0,0,0.3);
       transition: transform 0.2s;
+      cursor: pointer;
+    }
+    
+    button{
+      cursor: pointer;
     }
 
     .produto:hover {
@@ -76,6 +86,7 @@
       border-radius: 5px;
       cursor: pointer;
       transition: background 0.3s;
+      width: 100%;
     }
 
     .produto button:hover {
@@ -84,15 +95,15 @@
   </style>
 </head>
 <body>
-  <header>Dark Store
-    <button onclick="location.href='carrinho.html'" style="float:right;background:none;border:none;color:#bb86fc;cursor:pointer;margin-right: -3px;font-size: x-large;margin-top: -10px;">🛒</button>
+  <header>Breso Store
+    <button onclick="location.href='carrinho.html'" style="position:fixed;background:none;border:none;color:#bb86fc;cursor:pointer;right: -3px;font-size: x-large;top: 5px;z-index: 100;">🛒</button>
   
-  </header>
-  <script src="itens.js"></script>
+  </header> 
     
    <div class="banner"></div>
   <section class="produtos" id="produtos"></section>
 
+  <script src="itens.js"></script>
   <script>
     
 
@@ -104,7 +115,7 @@
       card.innerHTML = `
         <img src="${p.imagem}" alt="${p.nome}">
         <div class="info">
-          <h3>${p.nome}</h3>
+          <h3>${p.nome} - ID: ${p.id}</h3>
           <p>R$ ${p.preco.toFixed(2)}</p>
           <button onclick="location.href='produto.html?id=${p.id}'">Ver produto</button>
         </div>

@@ -1,12 +1,12 @@
 <!-- produto.html -->
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Produto - Dark Store</title>
-  <script src="itens.js"></script>
-  <style>
+  <title>Produto - Dark Store</title> 
+   <style>
     :root {
       --bg-color: #121212;
       --card-bg: #1e1e1e;
@@ -14,7 +14,9 @@
       --accent: #bb86fc;
       --accent-hover: #9a67ea;
     }
-
+    button{
+      cursor: pointer;
+    }
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -29,8 +31,9 @@
       background-color: var(--card-bg);
       border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
       padding: 1rem;
+      cursor: pointer;
     }
 
     .produto img {
@@ -54,10 +57,14 @@
     }
   </style>
 </head>
+
 <body>
+  <button onclick="location.href='carrinho.html'" style="position:fixed;background:none;border:none;color:#bb86fc;cursor:pointer;right: -3px;font-size: x-large;top: 5px;">🛒</button>
+
   <div class="produto">
+    <br><br>
     <button onclick="window.history.back()" style="width:100%;margin-bottom: 5px;">Voltar</button>
-    
+
     <img id="imgProduto" src="" alt="Produto">
     <h1 id="nomeProduto"></h1>
     <p id="descProduto"></p>
@@ -65,11 +72,12 @@
     <button onclick="adicionarCarrinho()">Adicionar ao carrinho</button>
   </div>
 
+  <script src="itens.js"></script>
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const id = parseInt(urlParams.get('id'));
 
-  
+
 
     const produto = PRODUCTS.find(p => p.id === id);
 
@@ -81,13 +89,14 @@
     } else {
       document.body.innerHTML = '<h2>Produto não encontrado.</h2>';
     }
-	
-	function adicionarCarrinho() {
-  let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
-  carrinho.push(produto);
-  localStorage.setItem('carrinho', JSON.stringify(carrinho));
-  alert('Produto adicionado ao carrinho!');
-}
+
+    function adicionarCarrinho() {
+      let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+      carrinho.push(produto);
+      localStorage.setItem('carrinho', JSON.stringify(carrinho));
+      alert('Produto adicionado ao carrinho!');
+    }
   </script>
 </body>
+
 </html>

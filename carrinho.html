@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Carrinho - Dark Store</title>
+  
   <style>
     :root {
       --bg-color: #121212;
@@ -45,6 +46,9 @@
       align-items: center;
       border-bottom: 1px solid #333;
       padding: 0.5rem 0;
+    }
+    button{
+      cursor: pointer;
     }
 
     .item img {
@@ -154,6 +158,7 @@
     <p class="vazio">Seu carrinho está vazio.</p>
   </div>
 
+  <script src="itens.js"></script>
   <script>
     const carrinhoContainer = document.getElementById('carrinhoContainer');
 
@@ -193,9 +198,9 @@
       checkoutDiv.className = 'checkout';
       checkoutDiv.innerHTML = `
         <h2>Finalizar Pedido</h2>
-        <input type="text" id="nomeCliente" placeholder="Nome completo" required>
-        <input type="email" id="emailCliente" placeholder="E-mail" required>
-        <input type="tel" id="telefoneCliente" placeholder="Telefone" required>
+        <input  type="text" id="nomeCliente" placeholder="Nome completo" required>
+        <input  type="email" id="emailCliente" placeholder="E-mail" required>
+        <input  type="tel" id="telefoneCliente" placeholder="Telefone" required>
         <textarea id="enderecoCliente" rows="3" placeholder="Endereço completo" required></textarea>
         <button class="finalizar" onclick="finalizarPedido()">Confirmar Pedido</button>
       `;
@@ -216,11 +221,19 @@
       const endereco = document.getElementById('enderecoCliente').value.trim();
 
       if (!nome || !email || !tel || !endereco) {
-        alert('Por favor, preencha todos os campos antes de finalizar o pedido.');
+        alert('ERRO: Por favor, preencha todos os campos antes de finalizar o pedido.');
         return;
       }
 
-      alert(`✅ Pedido confirmado!\n\nObrigado, ${nome}!\nEnviaremos a confirmação para: ${email}`);
+
+      //-----------------------------------------------
+      var s = nome+'|'+email+'|'+tel+'|'+endereco;
+      s += '|'+localStorage.getItem('carrinho');
+      console.log(s)
+      //------------------------------------------------
+
+
+      alert(`✅ Pedido confirmado!\n\nObrigado, ${nome}!\nEnviaremos a confirmação para: ${email}`,10000);
       localStorage.removeItem('carrinho');
       carregarCarrinho();
     }
