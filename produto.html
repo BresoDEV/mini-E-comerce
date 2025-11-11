@@ -68,7 +68,7 @@
     <img id="imgProduto" src="" alt="Produto">
     <h1 id="nomeProduto"></h1>
     <p id="descProduto"></p>
-    <p id="precoProduto"></p>
+    <h2 id="precoProduto"></h2>
     <button onclick="adicionarCarrinho()">Adicionar ao carrinho</button>
   </div>
 
@@ -84,7 +84,7 @@
     if (produto) {
       document.getElementById('imgProduto').src = produto.imagem;
       document.getElementById('nomeProduto').textContent = produto.nome;
-      document.getElementById('descProduto').textContent = produto.desc;
+      document.getElementById('descProduto').innerHTML = produto.desc;
       document.getElementById('precoProduto').textContent = 'R$ ' + produto.preco.toFixed(2);
     } else {
       document.body.innerHTML = '<h2>Produto não encontrado.</h2>';
