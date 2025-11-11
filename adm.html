@@ -151,7 +151,7 @@
 
     textarea{
       border-radius: 5px;
-      width: 75%;
+      width: 90%;
       padding: 5px;
       background-color: #333;
       color: #f0f0f0;
@@ -161,42 +161,38 @@
     </head>
     <body>
         <header>🛒 Carrinho</header>
-        <button class="voltar" onclick="window.location.href='index.html'">Voltar</button>
         <div class="carrinho" id="carrinhoContainer">
-            <p class="vazio">Seu carrinho está vazio.</p>
+            <center>
+                <textarea
+                    name=""
+                    id="textarea"
+                    cols="30"
+                    rows="10"
+                >NgEbFAAwFikRBwsbR1VfUFdCXV5eUHpKFTcdDgQdDAkHHSgeTAEFYUhYXFYBCB8ERFNDJw0bBgUmABoEBhoEGUNKSxEBAA0HQ3lKUF5NQ0UbDAcOBB5HVEoILhVGQVoFFxVDSksFFhYNSlthOwQREwYJE0EVmkESRQ0NDyJISRUHHAJSFw8HCRxFDxkUKlKAUBtPJjFOIipBFgsJCRMxEw8REABJUj0ISUFTRU5IQWNOCwJKKgsXQQiKDlMDAQFBJRcABBtPCQcMB0kAFwAJCUEgGgABAQpLUgcJAEEVChwCACcdSR4VTxcdExQIBRJFCgdBMR0KG1VPOxxBRklBU0VOSF0hAFcxVAMCHAUHSYhTFBsNQSYBGhFUHAYUEwdJFxYMAUgFJlIcHVQZDhwJAw0OUxQbDUElGwoRAg5HAgQUHQ5TAQtIFC4TSQQbHRUXQQIMQRYLCxoGKhNFUBFPEh9BAgAAX0UKHRMiHB0VVBoKUhIOBhZTAQ9IAyIcDRFUHhIXQRIGAhITD0gPLFIfHxgaChdBC4gZGggBREE2H0kCFQYIUgIHABRTBwsFQSYfSRMdAgZSBQdJERIXHA0IMRNHUDECRwQEHEkFFkUfHQQqHwgCWE8GUhQQCEESBx0HEzUXHFAVHhIXDQdJAhIXCQlPYy4HUFRPR1JBRkldERdQOA4xUgADBwBLUhATCA8XCk4eDiCYSREWHQJSBBUaAFMCDxoTIhQIXFQZCBGLRhoEHRELSABjFwcVBggOE0ECBkEyCwkdEmMrBgUaCEcRDhQbBB0BAUgRJh4GUAQOCxEOSEmoUwpOHggtGgZQBRoCUhcJCotTBwsKBGMDHBEaCwhSEBMME1MBDxpBNh9JLFYcExMTEjVDUwsPSA8sGx0VVAASUhATCA8XCk4JQSUXGgQVTw2TQQMaFZJFAAdBNR0FBRkKRx+AHgAMHEtONA9jUklQVE9HUl0EG1+6RSYJEydSOx8XBEcCFBQGTVMWCwVBJQAMAxcaFRNPRBQ8</textarea>
+            </center>
+            <button id="Carregar" class="voltar">Carregar Pedido</button>
         </div>
         <script src="itens.js"></script>
         <script>
-    const carrinhoContainer = document.getElementById('carrinhoContainer');
+   
+   
+          const textarea = document.getElementById('textarea');
+          const Carregar = document.getElementById('Carregar');
+          const carrinhoContainer = document.getElementById('carrinhoContainer');
+          
+          Carregar.addEventListener('click',()=>{
+            //carrinhoContainer.innerHTML = 
+            carregarCarrinho(xorDecrypt(textarea.value,'senhaCriptografia').split('|')[4])
 
-    function carregarCarrinho(alerta = "_") {
-      const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+          });
 
 
 
-      if (alerta !== "_") {
-        carrinhoContainer.innerHTML = `
-        <p class="vazio">
-          Copie e envie o codigo abaixo para nosso WhatsApp para processar seu pedido, e assim, poderemos enviar o codigo de pagamento:
-          <br><br>
-          <textarea id="textarea">${alerta}</textarea>
-          <br><br>
-          <button class="voltar" id="btnWhatsapp" style="background-color:#22975a;">Enviar mensagem</button>
-        </p>
-        `;
 
-        document.getElementById("textarea").select();
-        document.execCommand("copy");
+          function carregarCarrinho(alerta = "_") {
+          const carrinho = JSON.parse(alerta) || [];
 
-        document.getElementById("btnWhatsapp").addEventListener("click", () => { 
-                const numero = "5554996180319"; // 55 = Brasil, depois DDD + número
-                const mensagem = alerta;
-                const link = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
-                window.open(link, "_blank");
-        });
-
-        return;
-      }
+  
 
       if (carrinho.length === 0) {
         carrinhoContainer.innerHTML = '<p class="vazio">Seu carrinho está vazio.</p>';
@@ -218,7 +214,7 @@
             <h3>${item.nome}</h3>
             <p>R$ ${item.preco.toFixed(2)}</p>
           </div>
-          <button class="remover" onclick="removerItem(${index})">✕</button>
+          
         `;
         carrinhoContainer.appendChild(div);
       });
@@ -228,60 +224,13 @@
       totalDiv.textContent = `Total: R$ ${total.toFixed(2)}`;
       carrinhoContainer.appendChild(totalDiv);
 
-      const checkoutDiv = document.createElement('div');
-      checkoutDiv.className = 'checkout';
-      checkoutDiv.innerHTML = `
-        <h2>Finalizar Pedido</h2>
-        <input  type="text" id="nomeCliente" placeholder="Nome completo" required>
-        <input  type="email" id="emailCliente" placeholder="E-mail" required>
-        <input  type="tel" id="telefoneCliente" placeholder="DDD+Telefone" required>
-        <textarea id="enderecoCliente" rows="3" placeholder="Endereço completo (Rua, Numero, Bairro, Cidade)" required></textarea>
-        <button class="finalizar" onclick="finalizarPedido()">Confirmar Pedido</button>
-      `;
-      carrinhoContainer.appendChild(checkoutDiv);
-
-      //------------------------
+      
+      
     
     }
 
-    function removerItem(index) {
-      const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
-      carrinho.splice(index, 1);
-      localStorage.setItem('carrinho', JSON.stringify(carrinho));
-      carregarCarrinho();
-    }
 
-    function finalizarPedido() {
-      const nome = document.getElementById('nomeCliente').value.trim();
-      const email = document.getElementById('emailCliente').value.trim();
-      const tel = document.getElementById('telefoneCliente').value.trim();
-      const endereco = document.getElementById('enderecoCliente').value.trim();
-
-      if (!nome || !email || !tel || !endereco) {
-        alert('ERRO: Por favor, preencha todos os campos antes de finalizar o pedido.');
-        return;
-      }
-
-
-      //-----------------------------------------------
-      var s = nome+'|'+email+'|'+tel+'|'+endereco;
-      s += '|'+localStorage.getItem('carrinho');
-      console.log(s)
-      //------------------------------------------------
-
-
-      alert(`✅ Pedido confirmado!\n\nObrigado, ${nome}!`,3000);
-      localStorage.removeItem('carrinho');
-
-
-      carregarCarrinho(xorEncrypt(s, "senhaCriptografia"));
-    }
-
-    carregarCarrinho();
-
-
-    // Criptografia "por diversão" (XOR + base64) — NÃO É SEGURA
-function xorEncrypt(text, key) {
+          function xorEncrypt(text, key) {
   const out = [];
   for (let i = 0; i < text.length; i++) {
     out.push(String.fromCharCode(text.charCodeAt(i) ^ key.charCodeAt(i % key.length)));
@@ -297,13 +246,6 @@ function xorDecrypt(cipherBase64, key) {
   }
   return out.join('');
 }
-
-// Uso
-const senha = "minha-senha";
-const secreto = "mensagem secreta";
-const c = xorEncrypt(secreto, senha);
-console.log(c);
-console.log(xorDecrypt(c, senha));
         </script>
     </body>
 </html>
